@@ -1,0 +1,66 @@
+header {
+    background-color: white;
+    padding: 10px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd; /* Garis bawah untuk header */
+    width: 100%; /* Ensures header spans full width */
+}
+
+/* Left part of the header */
+.header-left {
+    text-align: left;
+}
+
+.header-left h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.header-left p {
+    margin: 0;
+    font-size: 14px;
+    color: gray;
+}
+
+/* Right part of the header */
+.header-right a {
+    margin-left: 20px;
+    margin-right: 30px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.header-right a:hover {
+    color: #87BFFF; /* Warna saat hover */
+}
+
+#notification {
+    position: fixed;
+    top: 20px; /* Jarak dari atas */
+    left: 50%; /* Posisi horizontal tengah */
+    transform: translateX(-50%); /* Koreksi posisi agar benar-benar di tengah */
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: none; /* Awalnya disembunyikan */
+    z-index: 1000;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+}
+    #notification.error {
+        background-color: #f44336;
+    }
+
+#penjualanChart {
+    max-width: 50px;    /* maksimal lebar */
+    max-height: 50px;   /* maksimal tinggi */
+    width: 50%;         /* responsive lebar */
+    height: auto;        /* otomatis tinggi sesuai lebar */
+    display: block;      /* supaya margin auto jalan */
+    margin: 0 auto;      /* tengah horizontal */
+}
