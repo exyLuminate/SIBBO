@@ -83,59 +83,75 @@ $result = mysqli_query($link, $query);
     <title>Manajemen Kategori</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-<header>
-    <div class="header-left">
-        <h1>Manajemen Kategori</h1>
-    </div>
-    <nav class="header-right">
-        <a href="dashboard.php"> Dashboard</a>
-        <a href="barang.php">Manajemen Barang</a>
-        <a href="kategori.php">Manajemen Kategori</a>
-        <a href="transaksi.php">Transaksi Penjualan</a>
-        <a href="laporan.php">Laporan Penjualan</a>
-        <a href="setting.php">Pengaturan</a>
-        <a href="logout.php" style="color: red;">Logout</a>
-    </nav>
-</header>
+<div class="app-container">
+    <?php include 'sidebar.php'; ?>
 
-<h2>Manajemen Kategori</h2>
+    <main class="main-content">
+        <header class ="main-header">
+            <h1>Manajemen Kategori</h1>
+            <div class="admin-info">
+                Selamat datang, <strong><?php echo htmlspecialchars( $_SESSION['username']); ?>!    </strong>
+            </div>
+        </header>
+    
 
-<!-- Form Pencarian Kategori -->
-<form method="GET" action="">
-    <input type="text" name="search" placeholder="Cari kategori" value="<?= htmlspecialchars($searchName) ?>">
-    <button type="submit">Cari</button>
-    <a href="kategori.php">Reset</a>
-</form>
+        <div class="content-body">
 
-<!-- Form Tambah Kategori -->
-<form method="POST" action="">
-    <input type="text" name="nama_kategori" placeholder="Nama kategori" required>
-    <button type="submit" name="add">Tambah Kategori</button>
-</form>
+            <div class="card">
+                <h3>Tambah Kategori Baru</h3>
+                <!-- Form Tambah Kategori -->
+                <form method="POST" action="" class="form-inline">
+                <input type="text" name="nama_kategori" placeholder="Nama kategori">
+                <button type="submit" name="add" class="btn btn-primary">Tambah Kategori</button>
+                </form>
+            </div>
 
+            <div class="card">
+                <div class="form-inline">
+                     <!-- Form Cari Kategori -->
+        <form method="GET" action="" style="display: contents;">
+                    <input type="text" name="search" placeholder="Cari kategori.." value="">
+                    <button type="submit" name="add" class="btn btn-primary">Cari Kategori</button>
+                    <a href="kategori.php" class="btn btn-link">Reset</a>
+                    </form>
+                </div>
 
-
-<!-- Tabel Kategori -->
-<table border="1" cellpadding="10" cellspacing="0">
+                <!-- Tabel Kategori -->
+<table class="data-table">
+<thead>
     <tr>
         <th>ID</th>
         <th>Nama Kategori</th>
         <th>Jumlah Barang</th>
         <th>Aksi</th>
     </tr>
+</thead>
+
+<tbody>  
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
     <tr data-id="<?= $row['id_kategori'] ?>">
         <td><?= $row['id_kategori'] ?></td>
         <td contenteditable="true" data-field="nama_kategori"><?= htmlspecialchars($row['nama_kategori']) ?></td>
         <td><?= $row['jumlah_barang'] ?></td>
         <td>
-            <a href="kategori.php?delete=<?= $row['id_kategori'] ?>" onclick="return confirm('Hapus kategori ini?')">Hapus</a>
+             <a href="kategori.php?delete=<?= $row['id_kategori'] ?>" onclick="return confirm('Hapus kategori ini?')" class="btn btn-danger">
+        <i class="fas fa-trash"></i> </a>
         </td>
     </tr>
-    <?php } ?>
+    <?php } ?>  
+</tbody>
+        </div>
+
+
 </table>
+
+</main>
+
+</div>
+
 
 
 

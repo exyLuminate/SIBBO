@@ -28,16 +28,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <!DOCTYPE html>
 <html>
-<head><title>Login Admin</title></head>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    <h2>Login Admin</h2>
-    <form method="POST" action="">
-        <label>Username:</label><br>
-        <input type="text" name="username" required><br><br>
-        <label>Password:</label><br>
-        <input type="password" name="password" required><br><br>
-        <button type="submit">Login</button>
-    </form>
-    <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+    <div class="login-container">
+        <div class="card login-box">
+            <h2>Login Admin</h2>
+            <form method="POST" action="">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <?php if (isset($error)) echo "<div class='login-error'>$error</div>"; ?>
+        </div>
+    </div>
 </body>
 </html>

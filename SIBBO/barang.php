@@ -74,84 +74,79 @@ $result = mysqli_query($link, $query);
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
-   <header>
-        <div class="header-left">
-             <h1>Manajemen Barang</h1>
-        </div>
-        <nav class="header-right">
-            <a href="dashboard.php"> Dashboard</a>
-            <a href="barang.php">Manajemen Barang</a>
-            <a href="kategori.php">Manajemen Kategori</a>
-            <a href="transaksi.php">Transaksi Penjualan</a>
-            <a href="laporan.php">Laporan Penjualan</a>
-            <a href="setting.php">Pengaturan</a>
-            <a href="logout.php" style="color: red;">Logout</a>
-        </nav>
-    </header>
-    <h2>Manajemen Barang</h2>
+    <div class="app-container">
+        <?php include 'sidebar.php'; ?>
 
-    <form method="GET" action="">
-        <input type="text" name="search" placeholder="Cari barang atau kategori" value="<?= htmlspecialchars($search) ?>">
-        <button type="submit">Cari</button>
-        <a href="barang.php">Reset</a>
-    </form>
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Manajemen Barang</h1>
+                 <div class="admin-info">
+                    Selamat datang, <strong><?php echo htmlspecialchars($_SESSION['username']); ?>!</strong>
+                </div>
+            </header>
 
-    <form method="POST" action="">
-        <input type="text" name="nama_barang" placeholder="Nama barang" required>
-        <select name="id_kategori" required>
-            <option value="">-- Pilih Kategori --</option>
-            <?php
-            $catResult = mysqli_query($link, "SELECT * FROM Kategori");
-            while ($cat = mysqli_fetch_assoc($catResult)) {
-                echo "<option value='{$cat['id_kategori']}'>" . htmlspecialchars($cat['nama_kategori']) . "</option>";
-            }
-            ?>
-        </select>
-        <input type="number" name="harga" placeholder="Harga" step="0.01" min="0" required>
-        <input type="number" name="stok" placeholder="Stok" min="0" required>
-        <button type="submit" name="add">Tambah Barang</button>
-    </form>
+            <div class="content-body">
+                <div class="card">
+                    <h3>Tambah Barang Baru</h3>
+                    <form method="POST" action="" class="form-inline">
+                        <input type="text" name="nama_barang" placeholder="Nama barang" required>
+                        <select name="id_kategori" required>
+                            <option value="">-- Pilih Kategori --</option>
+                            <?php /* PHP loop untuk kategori */ ?>
+                        </select>
+                        <input type="number" name="harga" placeholder="Harga" step="0.01" min="0" required>
+                        <input type="number" name="stok" placeholder="Stok" min="0" required>
+                        <button type="submit" name="add" class="btn btn-primary">Tambah</button>
+                    </form>
+                </div>
 
-    <table border="1" cellpadding="10" cellspacing="0">
-        <tr>
-            <th>ID</th>
-            <th>Nama Barang</th>
-            <th>Kategori</th>
-            <th>Harga</th>
-            <th>Stok</th>
-            <th>Aksi</th>
-        </tr>
-        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-        <tr data-id="<?= $row['id_barang'] ?>">
-            <td><?= $row['id_barang'] ?></td>
-            <td contenteditable="true" data-field="nama_barang"><?= htmlspecialchars($row['nama_barang']) ?></td>
-            <td>
-                <select data-field="id_kategori">
-                    <?php
-                    $catResult = mysqli_query($link, "SELECT * FROM Kategori");
-                    while ($cat = mysqli_fetch_assoc($catResult)) {
-                        $selected = ($cat['id_kategori'] == $row['id_kategori']) ? 'selected' : '';
-                        echo "<option value='{$cat['id_kategori']}' $selected>" . htmlspecialchars($cat['nama_kategori']) . "</option>";
-                    }
-                    ?>
-                </select>
-            </td>
-            <td contenteditable="true" data-field="harga"><?= number_format($row['harga'], 2) ?></td>
-            <td contenteditable="true" data-field="stok"><?= $row['stok'] ?></td>
-            <td>
-                <a href="barang.php?delete=<?= $row['id_barang'] ?>" onclick="return confirm('Hapus barang ini?')">Hapus</a>
-            </td>
-        </tr>
-        <?php } ?>
-    </table>
+                <div class="card">
+                    <div class="form-inline">
+                         <form method="GET" action="" style="display: contents;">
+                             <input type="text" name="search" placeholder="Cari barang atau kategori" value="<?= htmlspecialchars($search) ?>">
+                             <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Cari</button>
+                             <a href="barang.php" class="btn btn-link">Reset</a>
+                         </form>
+                    </div>
 
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Barang</th>
+                                <th>Kategori</th>
+                                <th>Harga</th>
+                                <th>Stok</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                            <tr data-id="<?= $row['id_barang'] ?>">
+                                <td><?= $row['id_barang'] ?></td>
+                                <td contenteditable="true" data-field="nama_barang"><?= htmlspecialchars($row['nama_barang']) ?></td>
+                                <td>
+                                    <select data-field="id_kategori">
+                                        <?php /* PHP loop untuk kategori dengan selected */ ?>
+                                    </select>
+                                </td>
+                                <td contenteditable="true" data-field="harga"><?= number_format($row['harga'], 2) ?></td>
+                                <td contenteditable="true" data-field="stok"><?= $row['stok'] ?></td>
+                                <td>
+                                    <a href="barang.php?delete=<?= $row['id_barang'] ?>" onclick="return confirm('Hapus barang ini?')" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
 
-
-<div id="notification">
-
-
-</div>
+    <div id="notification"></div>
 
    <script>
     function showNotification(message, isError = false) {

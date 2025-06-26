@@ -55,81 +55,71 @@ $penjualanData = mysqli_query($link, $queryPenjualan);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-   
     </style>
 </head>
+
 <body>
 
-     <header>
-        <div class="header-left">
-             <h1>Dashboard</h1>
-        </div>
-        <nav class="header-right">
-            <a href="dashboard.php"> Dashboard</a>
-            <a href="barang.php">Manajemen Barang</a>
-            <a href="kategori.php">Manajemen Kategori</a>
-            <a href="transaksi.php">Transaksi Penjualan</a>
-            <a href="laporan.php">Laporan Penjualan</a>
-            <a href="setting.php">Pengaturan</a>
-            <a href="logout.php" style="color: red;">Logout</a>
-        </nav>
-    </header>
+       <div class="app-container">
+        <?php include 'sidebar.php'; // Kita akan buat file sidebar terpisah ?>
 
-        <h1>Selamat datang, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>       
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Dashboard</h1>
+                <div class="admin-info">
+                    Selamat datang, <strong><?php echo htmlspecialchars($_SESSION['username']); ?>!</strong>
+                </div>
+            </header>
 
-
-    <section>
-
-        <h2>Statistik Utama</h2>
-        <div class="stats">
-            <div class="stat">
-                <h3>Barang</h3>
-                <p><?= $barangCount ?> Barang</p>
+            <div class="content-body">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="icon barang"><i class="fas fa-box"></i></div>
+                        <div class="info"><h3>Total Barang</h3><p><?= $barangCount ?></p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon kategori"><i class="fas fa-tags"></i></div>
+                        <div class="info"><h3>Total Kategori</h3><p><?= $kategoriCount ?></p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon transaksi"><i class="fas fa-shopping-cart"></i></div>
+                        <div class="info"><h3>Total Transaksi</h3><p><?= $transaksiCount ?></p></div>
+                    </div>
+                     <div class="stat-card">
+                        <div class="icon stok-rendah"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="info"><h3>Stok Rendah</h3><p><?= $stokLowCount ?></p></div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>Grafik Penjualan</h2>
+                    <div class="form-inline" style="justify-content: flex-end;">
+                        <label for="periode">Periode:</label>
+                        <select id="periode">
+                            <option value="day">Hari Ini</option>
+                            <option value="week">Minggu Ini</option>
+                            <option value="month">Bulan Ini</option>
+                        </select>
+                    </div>
+                    <canvas id="penjualanChart" style="max-height: 350px;"></canvas>
+                </div>
             </div>
-            <div class="stat">
-                <h3>Kategori</h3>
-                <p><?= $kategoriCount ?> Kategori</p>
-            </div>
-            <div class="stat">
-                <h3>Transaksi</h3>
-                <p><?= $transaksiCount ?> Transaksi</p>
-            </div>
-            <div class="stat">
-                <h3>Stok Rendah</h3>
-                <p><?= $stokLowCount ?> Barang</p>
-            </div>
-        </div>
-
-            <h2>Statistik Real-Time</h2>
-<div>
-    <p>Total Transaksi Hari Ini: <strong><?= $totalHariIni ?></strong></p>
-    <p>Total Transaksi Minggu Ini: <strong><?= $totalMingguIni ?></strong></p>
-    <p>Total Transaksi Bulan Ini: <strong><?= $totalBulanIni ?></strong></p>
-</div>
-
-        <h2>Grafik Penjualan</h2>
-        <div>
-    <label for="periode">Pilih Periode:</label>
-    <select id="periode">
-        <option value="day">Hari Ini</option>
-        <option value="week">Minggu Ini</option>
-        <option value="month">Bulan Ini</option>
-    </select>
-</div>
+        </main>
+    </div>
 
 <canvas id="penjualanChart"></canvas>
-
 
     <script>
    $(document).ready(function () {
